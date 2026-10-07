@@ -8,6 +8,7 @@
   <style>
     :root {
       color-scheme: dark;
+
       --forest: #102923;
       --forest-light: #193c32;
       --cream: #f3f0df;
@@ -16,137 +17,403 @@
       --coral: #ff8b70;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
 
     body {
       min-height: 100vh;
-      margin: 0;
       display: grid;
       place-items: center;
       overflow: hidden;
+
       color: var(--cream);
       background-color: var(--forest);
+
       background-image:
-        linear-gradient(rgba(243, 240, 223, .035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(243, 240, 223, .035) 1px, transparent 1px),
-        radial-gradient(ellipse at 50% 42%, var(--forest-light), var(--forest) 68%);
-      background-size: 48px 48px, 48px 48px, auto;
-      font-family: Georgia, 'Times New Roman', serif;
+        linear-gradient(
+          rgba(243, 240, 223, .035) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(243, 240, 223, .035) 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          ellipse at 50% 42%,
+          var(--forest-light),
+          var(--forest) 68%
+        );
+
+      background-size:
+        48px 48px,
+        48px 48px,
+        auto;
+
+      font-family: Georgia, "Times New Roman", serif;
     }
+
+    /* =========================
+       LOADER
+    ========================= */
 
     .loader {
       width: min(100% - 48px, 520px);
       padding: 32px 0;
+
       animation: arrive .8s ease-out both;
     }
 
-    .topline, .status-row, .bottomline {
+    /* =========================
+       HEADER
+    ========================= */
+
+    .topline {
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
 
-    .topline { padding-bottom: 22px; border-bottom: 1px solid rgba(243, 240, 223, .2); }
+      padding-bottom: 22px;
+
+      border-bottom:
+        1px solid rgba(243, 240, 223, .2);
+    }
 
     .wordmark {
       color: var(--cream);
-      font: 700 13px/1.2 'Courier New', monospace;
+
+      font:
+        700 13px/1.2
+        "Courier New",
+        monospace;
+
       letter-spacing: .14em;
     }
 
-    .wordmark span { color: var(--lime); }
+    .wordmark span {
+      color: var(--lime);
+    }
 
-    .edition, .eyebrow, .status, .percent, .bottomline {
-      font-family: 'Courier New', monospace;
+    .edition {
+      color: var(--muted);
+
+      font:
+        10px/1.2
+        "Courier New",
+        monospace;
+
+      letter-spacing: .12em;
       text-transform: uppercase;
     }
 
-    .edition { color: var(--muted); font-size: 10px; letter-spacing: .12em; }
+    /* =========================
+       IMAGE
+    ========================= */
 
     .visual {
       position: relative;
+
       width: 148px;
       height: 148px;
+
       margin: 68px auto 42px;
+
       display: grid;
       place-items: center;
     }
 
+    .visual::before {
+      content: "";
+
+      position: absolute;
+
+      width: 174px;
+      height: 174px;
+
+      border:
+        1px solid
+        rgba(214, 243, 106, .25);
+
+      border-radius: 50%;
+
+      animation:
+        pulse-ring 2s ease-in-out infinite;
+    }
+
+    .visual::after {
+      content: "";
+
+      position: absolute;
+
+      width: 190px;
+      height: 190px;
+
+      border:
+        1px dashed
+        rgba(243, 240, 223, .12);
+
+      border-radius: 50%;
+
+      animation:
+        rotate-ring 8s linear infinite;
+    }
+
+    .rotating-image {
+      position: relative;
+      z-index: 2;
+
+      width: 148px;
+      height: 148px;
+
+      object-fit: cover;
+
+      border-radius: 50%;
+
+      border:
+        3px solid
+        var(--lime);
+
+      background: var(--forest-light);
+
+      box-shadow:
+        0 0 0 8px rgba(214, 243, 106, .08),
+        0 0 35px rgba(214, 243, 106, .25);
+
+      animation:
+        rotate-image 2s linear infinite;
+    }
+
+    /* =========================
+       TEXT
+    ========================= */
 
     .eyebrow {
       margin: 0 0 14px;
+
       color: var(--lime);
-      font-size: 10px;
+
+      font:
+        10px/1.2
+        "Courier New",
+        monospace;
+
       letter-spacing: .18em;
       text-align: center;
+      text-transform: uppercase;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(36px, 8vw, 54px);
+
+      font-size:
+        clamp(36px, 8vw, 54px);
+
       font-weight: 400;
+
       line-height: 1.05;
+
       text-align: center;
     }
 
-    h1 em { color: var(--lime); font-weight: 400; }
+    h1 em {
+      color: var(--lime);
+      font-weight: 400;
+      font-style: normal;
+    }
 
     .description {
       margin: 15px 0 34px;
+
       color: var(--muted);
-      font: 13px/1.6 'Courier New', monospace;
+
+      font:
+        13px/1.6
+        "Courier New",
+        monospace;
+
       text-align: center;
     }
 
-    .status-row { margin-bottom: 10px; }
-    .status, .percent { color: var(--cream); font-size: 10px; letter-spacing: .08em; }
-    .percent { color: var(--lime); }
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 10px;
+    }
+
+    .status,
+    .percent {
+      color: var(--cream);
+
+      font:
+        10px/1.2
+        "Courier New",
+        monospace;
+
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .percent {
+      color: var(--lime);
+    }
+
+    /* =========================
+       PROGRESS BAR
+    ========================= */
 
     .track {
+      position: relative;
       height: 3px;
       overflow: hidden;
       background: rgba(243, 240, 223, .18);
     }
 
-    .track::after {
-      content: '';
-      display: block;
-      width: 34%;
+    .progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
       height: 100%;
       background: var(--lime);
-      animation: progress 1.8s cubic-bezier(.65, 0, .35, 1) infinite;
+      transition: width 0.1s linear;
     }
+
+    /* =========================
+       FOOTER
+    ========================= */
 
     .bottomline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
       margin-top: 18px;
+
       color: var(--muted);
-      font-size: 9px;
+
+      font:
+        9px/1.2
+        "Courier New",
+        monospace;
+
       letter-spacing: .1em;
+
+      text-transform: uppercase;
     }
 
-    .signal { color: var(--coral); }
+    .signal {
+      color: var(--coral);
+    }
 
-    @keyframes rotate { to { transform: rotate(360deg); } }
-    @keyframes pulse {
-      50% { transform: translate(-50%, -50%) scale(.88); opacity: .65; }
+    /* =========================
+       ANIMATIONS
+    ========================= */
+
+    @keyframes rotate-image {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
-    @keyframes progress {
-      0% { transform: translateX(-110%); }
-      100% { transform: translateX(300%); }
+
+    @keyframes rotate-ring {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(-360deg);
+      }
     }
+
+    @keyframes pulse-ring {
+      0%,
+      100% {
+        transform: scale(.95);
+        opacity: .4;
+      }
+
+      50% {
+        transform: scale(1.08);
+        opacity: .9;
+      }
+    }
+
     @keyframes arrive {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 480px) {
-      .visual { margin-top: 54px; margin-bottom: 34px; }
-      .loader { width: min(100% - 40px, 520px); }
-      .edition { font-size: 9px; }
+
+      .visual {
+        margin-top: 54px;
+        margin-bottom: 34px;
+        width: 130px;
+        height: 130px;
+      }
+
+      .loader {
+        width: min(100% - 40px, 520px);
+      }
+
+      .edition {
+        font-size: 9px;
+      }
+
+      .rotating-image {
+        width: 130px;
+        height: 130px;
+      }
+
+      .visual::before {
+        width: 154px;
+        height: 154px;
+      }
+
+      .visual::after {
+        width: 170px;
+        height: 170px;
+      }
     }
 
+    /* =========================
+       REDUCED MOTION
+    ========================= */
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+
+      *,
+      *::before,
+      *::after {
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
@@ -156,32 +423,92 @@
 </head>
 <body>
   <main class="loader" aria-labelledby="loading-title" aria-busy="true">
+    <!-- HEADER -->
     <header class="topline">
-      <div class="wordmark">KIVAYWA<span>.</span></div>
-      <div class="edition">KNOWLEDGE IS IMMORTAL</div>
+      <div class="wordmark">
+        KIVAYWA<span>.</span>
+      </div>
+      <div class="edition">
+        KNOWLEDGE IS IMMORTAL
+      </div>
     </header>
 
-    <div>
-      <image src= url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEXKg3F8mkTHc73zQo-a_wI7I_0e2TM3t3z8YZ0gQYYw&s=10)></image>
-      
+    <!-- ROTATING IMAGE -->
+    <div class="visual">
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEXKg3F8mkTHc73zQo-a_wI7I_0e2TM3t3z8YZ0gQYYw&s=10"
+        alt="Kivaywa High School"
+        class="rotating-image"
+      >
     </div>
 
-    <p class="eyebrow">A little moment</p>
-    <h1 id="loading-title">A Center<br>Of <em>Excellence</em></h1>
-    <p class="description">Getting everything ready for you.</p>
+    <!-- MAIN TEXT -->
+    <p class="eyebrow">
+      A little moment
+    </p>
 
+    <h1 id="loading-title">
+      A Center<br>
+      Of <em>Excellence</em>
+    </h1>
+
+    <p class="description">
+      Getting everything ready for you.
+    </p>
+
+    <!-- LOADING STATUS -->
     <section aria-label="Loading status">
       <div class="status-row">
-        <span class="status" role="status">Knowledge is being made immortal</span>
-        <span class="percent" aria-hidden="true">•••</span>
+        <span class="status" role="status">
+          Knowledge is being made immortal
+        </span>
+        <span class="percent" id="percentage" aria-hidden="true">
+          0%
+        </span>
       </div>
-      <div class="track" aria-hidden="true"></div>
+
+      <div class="track" aria-hidden="true">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="bottomline">
-      <span>One moment, please</span>
-      <span class="signal">● &nbsp;SYSTEM ONLINE</span>
+      <span>
+        One moment, please
+      </span>
+      <span class="signal">
+        ● &nbsp; SYSTEM ONLINE
+      </span>
     </footer>
   </main>
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+  <script>
+    const percentage = document.getElementById("percentage");
+    const progressFill = document.getElementById("progressFill");
+
+    let progress = 0;
+    const duration = 3000;
+    const startTime = Date.now();
+
+    const loader = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      progress = Math.min(
+        Math.floor((elapsed / duration) * 100),
+        100
+      );
+
+      percentage.textContent = progress + "%";
+      progressFill.style.width = progress + "%";
+
+      if (progress >= 100) {
+        clearInterval(loader);
+        window.location.href = "home.html";
+      }
+    }, 30);
+  </script>
 </body>
 </html>
