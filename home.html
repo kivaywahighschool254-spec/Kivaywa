@@ -1,1 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kivaywa High · Home</title>
+    <style>
+        :root {
+            --primary: #2563eb;      /* school blue */
+            --primary-hover: #1d4ed8;
+            --accent: #f59e0b;       /* warm accent */
+            --bg-dark: #0b1120;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* ---------- MOVING BACKGROUND (SLIDING PANORAMA) ---------- */
+        .bg-mover {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-mover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;           /* double width for seamless loop */
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800"><rect width="1200" height="800" fill="%231e293b"/><path d="M0 550 L150 400 L300 500 L450 350 L600 480 L750 320 L900 450 L1050 380 L1200 500 L1200 800 L0 800 Z" fill="%232d3b4f" opacity="0.7"/><path d="M0 650 L200 500 L400 620 L600 450 L800 580 L1000 430 L1200 550 L1200 800 L0 800 Z" fill="%233b4a5e" opacity="0.6"/><circle cx="200" cy="150" r="40" fill="%23f59e0b" opacity="0.25"/><circle cx="950" cy="180" r="70" fill="%232563eb" opacity="0.2"/><circle cx="600" cy="90" r="30" fill="%23ffffff" opacity="0.1"/><rect x="100" y="250" width="200" height="150" rx="12" fill="%232c3a4b" opacity="0.3"/><rect x="700" y="200" width="280" height="180" rx="12" fill="%23334155" opacity="0.25"/><text x="400" y="300" font-family="monospace" font-size="60" fill="%23ffffff" opacity="0.04" font-weight="bold">KIVAYWA</text></svg>');
+            background-repeat: repeat-x;
+            background-size: 50% 100%;   /* each tile = 1200px wide */
+            background-position: 0 0;
+            animation: slidePanorama 40s linear infinite;
+        }
+
+        @keyframes slidePanorama {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }  /* moves half of double-width = seamless loop */
+        }
+
+        /* all content sits above the moving background */
+        header, main, footer, section {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(11, 17, 32, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: rgba(11, 17, 32, 0.95);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo Design — with school emblem feel */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+        }
+
+        .logo-icon::after {
+            content: '📘';
+            font-size: 1.6rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.25rem 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white !important;
+            padding: 0.6rem 1.25rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        }
+
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        /* Hero Section — school homepage vibe */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            z-index: 2;
+            background: rgba(11, 17, 32, 0.55);
+            backdrop-filter: blur(4px);
+            padding: 2.5rem 2rem;
+            border-radius: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.2rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            border: none;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 25px -5px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px -5px rgba(37, 99, 235, 0.7);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Features/School Highlights */
+        .features {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 2.5rem 2rem;
+            border-radius: 28px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(37, 99, 235, 0.5);
+            box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.7);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(37, 99, 235, 0.15);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            color: #93c5fd;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .feature-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.75rem;
+            color: #f8fafc;
+        }
+
+        .feature-card p {
+            color: #cbd5e1;
+            font-size: 0.98rem;
+            margin-bottom: 1.8rem;
+            line-height: 1.5;
+        }
+
+        .feature-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .feature-link:hover {
+            gap: 0.9rem;
+            color: #fbbf24;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(2, 6, 18, 0.9);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer p {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(11, 17, 32, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 1.8rem 1.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 20px 30px rgba(0,0,0,0.6);
+                gap: 1.4rem;
+                border-radius: 0 0 24px 24px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero-content {
+                padding: 2rem 1.5rem;
+                border-radius: 36px;
+            }
+
+            .hero p {
+                font-size: 1.05rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0.9rem 1.2rem;
+            }
+
+            .logo span {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MOVING BACKGROUND LAYER (SLIDING SVG PANORAMA) -->
+    <div class="bg-mover"></div>
+
+    <!-- Header & Navigation -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon"></div>
+                <span>Kivaywa High</span>
+            </a>
+            
+            <button class="menu-toggle" id="menuToggle">&#9776;</button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#features">Academics</a></li>
+                <li><a href="#features">Campus Life</a></li>
+                <li><a href="#contact">Admissions</a></li>
+                <li><a href="#contact" class="nav-cta">Apply Now</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Learn · Lead · Excel</h1>
+            <p>Welcome to Kivaywa High — a community of scholars, athletes, and artists. Discover a world-class education where tradition meets innovation.</p>
+            <div class="hero-buttons">
+                <a href="#features" class="btn btn-primary">Explore Programs</a>
+                <a href="#contact" class="btn btn-secondary">Visit Campus</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- School Highlights / Navigation Options -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <h2>Discover Kivaywa</h2>
+            <p>Everything you need to thrive — academics, arts, athletics, and more.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>Academics</h3>
+                <p>Rigorous curriculum, AP courses, and dedicated faculty preparing students for top universities.</p>
+                <a href="#" class="feature-link">View Departments &rarr;</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3>Arts & Culture</h3>
+                <p>Award-winning theatre, choir, orchestra, and visual arts programs for every creative mind.</p>
+                <a href="#" class="feature-link">Explore Arts &rarr;</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚽</div>
+                <h3>Athletics</h3>
+                <p>State-of-the-art facilities and 20+ varsity teams building character, discipline, and teamwork.</p>
+                <a href="#" class="feature-link">Sports Schedule &rarr;</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Global Community</h3>
+                <p>Exchange programs, service trips, and a diverse student body from around the world.</p>
+                <a href="#" class="feature-link">Global Initiatives &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Kivaywa High School. All rights reserved. · 123 Learning Lane, Knowledge City</p>
+    </footer>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Sticky Header Effect on Scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scroll and active link switching
+        const links = document.querySelectorAll('.nav-links a');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Only prevent default for hash links that match an ID
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#') && targetId.length > 1) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+                
+                links.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                if(navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
