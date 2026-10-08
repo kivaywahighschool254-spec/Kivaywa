@@ -23,6 +23,8 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --glass-border: rgba(255, 255, 255, 0.08);
             --glass-bg: rgba(30, 41, 59, 0.8);
+            /* School photo URL (direct image link) */
+            --school-img: url('https://i0.wp.com/www.tenderyetu.com/wp-content/uploads/2026/05/KIVAYWA-BOYS-HIGH-SCHOOL.jpg?fit=215%2C234&ssl=1');
         }
 
         body {
@@ -34,13 +36,22 @@
             min-height: 100vh;
         }
 
-        /* ===== MOVING BACKGROUND (SLIDING PANORAMA) ===== */
+        /* ===== MOVING BACKGROUND (SLIDING SCHOOL PHOTO) ===== */
         .bg-mover {
             position: fixed;
             inset: 0;
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
+        }
+
+        /* Dark overlay for readability */
+        .bg-mover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(11, 17, 32, 0.82);
+            z-index: 1;
         }
 
         .bg-mover::before {
@@ -50,10 +61,12 @@
             left: 0;
             width: 200%;
             height: 100%;
-            background-image: url('https://www.google.com/imgres?q=kivaywa%20boys%20high%20school&imgurl=https%3A%2F%2Fi0.wp.com%2Fwww.tenderyetu.com%2Fwp-content%2Fuploads%2F2026%2F05%2FKIVAYWA-BOYS-HIGH-SCHOOL.jpg%3Ffit%3D215%252C234%26ssl%3D1&imgrefurl=https%3A%2F%2Fwww.tenderyetu.com%2Fproposed-construction-of-a-multi-purpose-hall-at-kivaywa-boys-high-school-in-matete-sub-county-lugari-constituency%2F&docid=sPBQb0usx-1t3M&tbnid=pYsj1EEZpVJjFM&vet=12ahUKEwjpxYe4yaqXAxVyUkEAHW1xFEAQnPAOegQILhAA..i&w=215&h=234&hcb=2&ved=2ahUKEwjpxYe4yaqXAxVyUkEAHW1xFEAQnPAOegQILhAA" viewBox="0 0 1200 800" width="1200" height="800"><rect width="1200" height="800" fill="%231e293b"/><path d="M0 550 L150 400 L300 500 L450 350 L600 480 L750 320 L900 450 L1050 380 L1200 500 L1200 800 L0 800 Z" fill="%232d3b4f" opacity="0.7"/><path d="M0 650 L200 500 L400 620 L600 450 L800 580 L1000 430 L1200 550 L1200 800 L0 800 Z" fill="%233b4a5e" opacity="0.6"/><circle cx="200" cy="150" r="40" fill="%23f59e0b" opacity="0.25"/><circle cx="950" cy="180" r="70" fill="%232563eb" opacity="0.2"/><circle cx="600" cy="90" r="30" fill="%23ffffff" opacity="0.1"/><rect x="100" y="250" width="200" height="150" rx="12" fill="%232c3a4b" opacity="0.3"/><rect x="700" y="200" width="280" height="180" rx="12" fill="%23334155" opacity="0.25"/><text x="400" y="300" font-family="monospace" font-size="60" fill="%23ffffff" opacity="0.04" font-weight="bold">KIVAYWA</text></svg>');
+            background-image: var(--school-img);
             background-repeat: repeat-x;
-            background-size: 50% 100%;
-            animation: slidePanorama 40s linear infinite;
+            background-size: auto 100%;
+            background-position: 0 0;
+            animation: slidePanorama 60s linear infinite;
+            z-index: 0;
         }
 
         @keyframes slidePanorama {
@@ -105,22 +118,24 @@
             letter-spacing: -0.02em;
         }
 
+        /* School photo as logo */
         .logo-icon {
-            width: 44px;
-            height: 44px;
-            background-image:url(https://www.google.com/imgres?q=kivaywa%20boys%20high%20school&imgurl=https%3A%2F%2Fi0.wp.com%2Fwww.tenderyetu.com%2Fwp-content%2Fuploads%2F2026%2F05%2FKIVAYWA-BOYS-HIGH-SCHOOL.jpg%3Ffit%3D215%252C234%26ssl%3D1&imgrefurl=https%3A%2F%2Fwww.tenderyetu.com%2Fproposed-construction-of-a-multi-purpose-hall-at-kivaywa-boys-high-school-in-matete-sub-county-lugari-constituency%2F&docid=sPBQb0usx-1t3M&tbnid=pYsj1EEZpVJjFM&vet=12ahUKEwjpxYe4yaqXAxVyUkEAHW1xFEAQnPAOegQILhAA..i&w=215&h=234&hcb=2&ved=2ahUKEwjpxYe4yaqXAxVyUkEAHW1xFEAQnPAOegQILhAA);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-image: var(--school-img);
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
-            font-size: 1.6rem;
+            flex-shrink: 0;
+            transition: var(--transition);
         }
 
-        .logo-icon::after {
-            content-image: url(https://www.google.com/imgres?q=kivaywa%20boys%20high%20school&imgurl=https%3A%2F%2Fi0.wp.com%2Fwww.tenderyetu.com%2Fwp-content%2Fuploads%2F2026%2F05%2FKIVAYWA-BOYS-HIGH-SCHOOL.jpg%3Ffit%3D215%252C234%26ssl%3D1&imgrefurl=https%3A%2F%2Fwww.tenderyetu.com%2Fproposed-construction-of-a-multi-purpose-hall-at-kivaywa-boys-high-school-in-matete-sub-county-lugari-constituency%2F&docid=sPBQb0usx-1t3M&tbnid=pYsj1EEZpVJjFM&vet=12ahUKEwjpxYe4yaqXAxVyUkEAHW1xFEAQnPAOegQILhAA..i&w=215&h=234&hcb=2&ved=2ahUKEwjpxYe4yaqXAxVyUkEAHW1xFEAQnPAOegQILhAA);
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        .logo:hover .logo-icon {
+            transform: scale(1.05);
+            box-shadow: 0 0 28px rgba(37, 99, 235, 0.8);
+            border-color: var(--accent);
         }
 
         .nav-links {
@@ -201,8 +216,8 @@
 
         .hero-content {
             max-width: 850px;
-            background: rgba(11, 17, 32, 0.55);
-            backdrop-filter: blur(4px);
+            background: rgba(11, 17, 32, 0.75);
+            backdrop-filter: blur(10px);
             padding: 2.5rem 2rem;
             border-radius: 48px;
             border: 1px solid var(--glass-border);
@@ -215,6 +230,7 @@
             margin-bottom: 1.5rem;
             background: linear-gradient(to right, #ffffff, #cbd5e1);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.025em;
             text-shadow: 0 2px 20px rgba(0,0,0,0.3);
@@ -449,11 +465,17 @@
             .logo span {
                 font-size: 1.1rem;
             }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- MOVING BACKGROUND LAYER (SLIDING SVG PANORAMA) -->
+    <!-- MOVING BACKGROUND LAYER (SLIDING SCHOOL PHOTO) -->
     <div class="bg-mover"></div>
 
     <!-- HEADER & NAVIGATION -->
