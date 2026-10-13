@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT182QjOZmHaUdd56SiVgSFx14YvNEuzOUS7A&s">
+    <title>Kivaywa High | Academics</title>
+    <style>
+        /* ===== RESET & GLOBAL (consistent with main site) ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --accent: #f59e0b;
+            --bg-dark: #0b1120;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(30, 41, 59, 0.8);
+            /* School photo URL (direct image link) */
+            --school-img: url('https://i0.wp.com/www.tenderyetu.com/wp-content/uploads/2026/05/KIVAYWA-BOYS-HIGH-SCHOOL.jpg?fit=215%2C234&ssl=1');
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== MOVING BACKGROUND (SLIDING SCHOOL PHOTO) ===== */
+        .bg-mover {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-mover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(11, 17, 32, 0.85);
+            z-index: 1;
+        }
+
+        .bg-mover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background-image: var(--school-img);
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+            background-position: 0 0;
+            animation: slidePanorama 60s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes slidePanorama {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ===== LAYOUT & Z-INDEX ===== */
+        header, main, footer, section {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(11, 17, 32, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: rgba(11, 17, 32, 0.95);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-image: var(--school-img);
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            transform: scale(1.05);
+            box-shadow: 0 0 28px rgba(37, 99, 235, 0.8);
+            border-color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.25rem 0;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-main);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white !important;
+            padding: 0.6rem 1.25rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        /* ===== ACADEMICS HERO ===== */
+        .academics-hero {
+            min-height: 55vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .academics-hero-content {
+            max-width: 850px;
+            background: rgba(11, 17, 32, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem 2rem;
+            border-radius: 48px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .academics-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.025em;
+        }
+
+        .academics-hero p {
+            font-size: 1.2rem;
+            color: #e2e8f0;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* ===== PROGRAMS / DEPARTMENTS ===== */
+        .programs {
+            padding: 3rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .program-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 2.5rem 2rem;
+            border-radius: 28px;
+            transition: var(--transition);
+            overflow: hidden;
+            box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .program-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(37, 99, 235, 0.5);
+            box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.7);
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .program-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(37, 99, 235, 0.15);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            color: #93c5fd;
+        }
+
+        .program-card:hover .program-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .program-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.75rem;
+            color: #f8fafc;
+        }
+
+        .program-card p {
+            color: #cbd5e1;
+            font-size: 0.98rem;
+            margin-bottom: 1.8rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .program-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            align-self: flex-start;
+        }
+
+        .program-link:hover {
+            gap: 0.9rem;
+            color: #fbbf24;
+        }
+
+        /* ===== CURRICULUM HIGHLIGHTS ===== */
+        .curriculum {
+            padding: 4rem 2rem 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .curriculum-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: rgba(11, 17, 32, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 36px;
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            box-shadow: 0 20px 35px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .curriculum-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+            color: #ffffff;
+        }
+
+        .curriculum-text p {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .curriculum-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .curriculum-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #e2e8f0;
+            font-size: 1rem;
+        }
+
+        .curriculum-list li::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: rgba(37, 99, 235, 0.2);
+            border-radius: 8px;
+            color: #93c5fd;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .curriculum-image {
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.6);
+            aspect-ratio: 4 / 3;
+            background-image: var(--school-img);
+            background-size: cover;
+            background-position: center;
+            transition: var(--transition);
+        }
+
+        .curriculum-image:hover {
+            transform: scale(1.02);
+            border-color: rgba(37, 99, 235, 0.5);
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats {
+            padding: 3rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 2rem;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 36px;
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem 2rem;
+            box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: rgba(2, 6, 18, 0.9);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        footer p {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 900px) {
+            .curriculum-wrapper {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(11, 17, 32, 0.98);
+                backdrop-filter: blur(16px);
+                padding: 1.8rem 1.5rem;
+                border-bottom: 1px solid var(--glass-border);
+                box-shadow: 0 20px 30px rgba(0,0,0,0.6);
+                gap: 1.4rem;
+                border-radius: 0 0 24px 24px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .academics-hero-content {
+                padding: 2rem 1.5rem;
+                border-radius: 36px;
+            }
+
+            .academics-hero p {
+                font-size: 1.05rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .curriculum-text h2 {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0.9rem 1.2rem;
+            }
+
+            .logo span {
+                font-size: 1.1rem;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .curriculum-wrapper {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- MOVING BACKGROUND LAYER (SLIDING SCHOOL PHOTO) -->
+    <div class="bg-mover"></div>
+
+    <!-- HEADER & NAVIGATION (same as main page) -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"></div>
+                <span>Kivaywa High</span>
+            </a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">&#9776;</button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Academics.html" class="active">Academics</a></li>
+                <li><a href="Arts_c.html">Campus Life</a></li>
+                <li><a href="contacts.html">Admissions</a></li>
+                <li><a href="contacts.html" class="nav-cta">Apply Now</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- ACADEMICS HERO -->
+    <section class="academics-hero">
+        <div class="academics-hero-content">
+            <h1>Academics at Kivaywa</h1>
+            <p>Where curiosity meets rigorous scholarship. Explore our comprehensive curriculum designed to challenge and inspire every student.</p>
+        </div>
+    </section>
+
+    <!-- DEPARTMENTS / PROGRAMS GRID -->
+    <section class="programs" id="programs">
+        <div class="section-header">
+            <h2>Departments & Programs</h2>
+            <p>From STEM to humanities, our departments foster deep learning and critical thinking.</p>
+        </div>
+
+        <div class="programs-grid">
+            <div class="program-card">
+                <div class="program-icon">🔬</div>
+                <h3>Science & STEM</h3>
+                <p>Biology, Chemistry and Physics</p>
+                
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">📐</div>
+                <h3>Mathematics</h3>
+                <p>From Algebra to Calculus, our math program builds analytical skills and problem-solving confidence.</p>
+                           </div>
+
+            <div class="program-card">
+                <div class="program-icon">📚</div>
+                <h3>Humanities</h3>
+                <p>Literature, History, and Languages that develop communication, empathy, and global awareness.</p>
+            </div>
+          
+
+            <div class="program-card">
+                <div class="program-icon">🎨</div>
+                <h3>Technicals</h3>
+                <p>Computer Studies, Germany, French, Agriculture and Business Studies.</p>
+                <a href="Arts_c.html" class="program-link">Explore Arts &rarr;</a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">🏛️</div>
+                <h3>HUMANITIES</h3>
+                <p>Geography, Histroy and CRE.</p>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- CURRICULUM HIGHLIGHTS -->
+    <section class="curriculum">
+        <div class="curriculum-wrapper">
+            <div class="curriculum-text">
+                <h2>Curriculum Highlights</h2>
+                <p>Our academic framework blends national standards with innovative teaching methods, ensuring students are prepared for university and beyond.</p>
+                <ul class="curriculum-list">
+                    <li>Advanced Placement (AP) courses in 12 subjects</li>
+                    <li>Personalized learning paths and mentorship</li>
+                    <li>Project-based and inquiry-driven learning</li>
+                    <li>Regular assessments and feedback for growth</li>
+                    <li>University counselling and career guidance</li>
+                </ul>
+            </div>
+            <div class="curriculum-image" role="img" aria-label="Kivaywa High School campus"></div>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">University Acceptance</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24</div>
+                <div class="stat-label">AP & Honors Courses</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1:12</div>
+                <div class="stat-label">Teacher‑Student Ratio</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">30+</div>
+                <div class="stat-label">Clubs & Societies</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Kivaywa High School. All rights reserved. · Webuye</p>
+    </footer>
+
+    <!-- JAVASCRIPT (consistent with main page + additional interactivity) -->
+    <script>
+        (function() {
+            'use strict';
+
+            // Sticky header effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 50);
+            });
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Smooth scroll + active link management
+            const links = document.querySelectorAll('.nav-links a');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('href');
+                    // Only handle internal anchor links (starting with #)
+                    if (targetId.startsWith('#') && targetId.length > 1) {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                    // Update active class
+                    links.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    // Close mobile menu
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+
+            // Optional: Add subtle hover effect on program cards via JS (already in CSS, but keeping for consistency)
+            // This is a no-op but ensures any future dynamic additions work.
+        })();
+    </script>
+</body>
+</html>
